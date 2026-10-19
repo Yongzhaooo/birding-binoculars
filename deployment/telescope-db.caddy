@@ -1,0 +1,10 @@
+wyj.cangming.fyi {
+    import safe_access_log
+    header Strict-Transport-Security "max-age=31536000"
+    request_body {
+        max_size 8MB
+    }
+    reverse_proxy 127.0.0.1:8092 {
+        header_up X-Real-IP {remote_host}
+    }
+}

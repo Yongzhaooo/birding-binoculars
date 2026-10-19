@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="个人自用的观鸟望远镜参数与实拍数据库，按规格、重量和参考入手价查找型号，分享真实拍摄与参数补充。">
+  <meta name="theme-color" content="#243f35"><title>望远镜数据库 · 个人自用</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/" aria-label="望远镜数据库首页"><span class="brand-mark" aria-hidden="true">W</span><span>望远镜数据库<small>FIELD NOTES / 个人自用</small></span></a>
+    <nav aria-label="主导航"><a href="#catalog">参数库</a><a href="#gallery">实拍图库</a><button id="contribute-top" class="button dark">补充资料 <span aria-hidden="true">＋</span></button></nav></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">BIRDING BINOCULARS</p><h1>先看清参数，<br>再选择望远镜。</h1><p class="intro-copy">一份个人整理的观鸟双筒资料库。<br>把型号、材料、眼距与参考入手价放在一起，也留出真实使用者的视角。</p><a class="text-link" href="#catalog">浏览型号 <span aria-hidden="true">↓</span></a></div>
+      <aside class="intro-aside"><div class="scope-drawing" aria-hidden="true"><div class="scope-circle small-circle"></div><div class="scope-circle large-circle"></div><div class="scope-bridge"></div><span>8×42 / 10×42 / 更多规格</span></div><div class="stats"><div><strong id="model-count">—</strong><span>型号规格</span></div><div><strong id="price-count">—</strong><span>参考价格</span></div><div><strong id="photo-count">—</strong><span>用户实拍</span></div></div></aside>
+    </section>
+    <section id="catalog" class="catalog-section"><div class="section-heading"><div><p class="eyebrow">01 / CATALOG</p><h2>参数库</h2></div><a class="button outline" href="/downloads/telescopes.xlsx" download="望远镜公开参数.xlsx">下载参数 Excel <span aria-hidden="true">↗</span></a></div>
+      <p class="muted">参考入手价为历史整理值，含不同成色，不代表实时售价。参数缺项保留待核，点开型号查看完整资料与来源。</p>
+      <div class="filter-panel"><label class="search-label">查找型号<input id="search" type="search" placeholder="搜索品牌、系列、规格或材料…" autocomplete="off"></label>
+        <label>品牌<select id="brand-filter"><option value="">全部品牌</option></select></label>
+        <label>倍率<select id="mag-filter"><option value="">全部倍率</option></select></label>
+        <label>物镜口径<select id="objective-filter"><option value="">全部口径</option></select></label>
+        <label>参考入手价<select id="price-filter"><option value="">不限价格</option><option value="500">500元以内</option><option value="1000">1000元以内</option><option value="2000">2000元以内</option><option value="3000">3000元以内</option><option value="known">仅有参考价</option></select></label>
+        <label>ED配置<select id="ed-filter"><option value="">全部配置</option><option value="ed">已列ED配置</option><option value="unknown">待核或未列</option></select></label>
+      </div>
+      <div class="results-toolbar"><p id="result-count" aria-live="polite">正在读取资料…</p><label>排序<select id="sort"><option value="name">按品牌型号</option><option value="price">参考价从低到高</option><option value="weight">重量从轻到重</option><option value="field">视场从大到小</option></select></label></div>
+      <div id="load-error" class="notice hidden" role="alert"></div>
+      <div class="table-wrap"><table class="catalog-table"><thead><tr><th>品牌 / 型号</th><th>规格</th><th>参考入手价</th><th>视场</th><th>出瞳距</th><th>重量</th><th>光学配置</th><th><span class="sr-only">查看详情</span></th></tr></thead><tbody id="model-rows"></tbody></table></div>
+      <div class="pagination"><span id="page-label"></span><div><button id="previous" class="button outline">上一页</button><button id="next" class="button outline">下一页</button></div></div>
+      <p class="fine-print">价格与初始参数整理：2026-10-19。Excel为初始目录快照，后续审核补充以型号详情为准。</p>
+    </section>
+    <section id="gallery"><div class="section-heading"><div><p class="eyebrow">02 / IN THE FIELD</p><h2>透过镜头，看看真实表现。</h2></div><button id="contribute-photo" class="button dark">分享实拍</button></div>
+      <p class="muted">实物外观、镜内成像、逆光与边缘表现，都可以补充。拍摄设备和条件会和图片一起保留，方便判断。</p><div id="photo-gallery" class="photo-grid"></div>
+    </section>
+    <section class="contribution-banner"><div><p class="eyebrow">一起把资料补全</p><h2>手里有这款镜子？<br>你的测量和实拍很有用。</h2><p>可以修正一个参数，补一张照片，或记录实际使用感受。<br>所有投稿先审核，再公开展示。</p></div><button id="contribute-bottom" class="button light">提交补充资料 <span aria-hidden="true">↗</span></button></section>
+  </main>
+  <footer><div><strong>望远镜数据库</strong><p>个人自用 · 公开分享 · 参数仅供参考</p></div><div><a href="https://github.com/Yongzhaooo/birding-binoculars" target="_blank" rel="noopener noreferrer">GitHub 源码</a><span>GPL-3.0-or-later</span><span>照片版权归作者</span></div></footer>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-top"><p class="eyebrow" id="detail-brand"></p><button class="icon-button" data-close="detail-dialog" aria-label="关闭型号详情">×</button></div><h2 id="detail-title"></h2><div id="detail-content"></div><div class="dialog-actions"><button id="detail-submit" class="button dark">为这款补充资料</button></div></dialog>
+  <dialog id="submission-dialog" aria-labelledby="submission-title"><div class="dialog-top"><p class="eyebrow">CONTRIBUTE</p><button class="icon-button" data-close="submission-dialog" aria-label="关闭投稿">×</button></div><h2 id="submission-title">补充一份真实资料</h2><p class="muted">投稿经人工审核后公开。请不要填写联系方式、精确住址或他人隐私。</p>
+    <form id="submission-form"><label>对应型号<select name="model_id" id="submit-model" required></select></label><div class="form-row"><label>投稿类型<select name="kind" id="submit-kind"><option value="photo">实际拍摄图片</option><option value="parameter">补充或修正参数</option><option value="experience">使用体验</option></select></label><label>公开署名<input name="credit" required maxlength="60" placeholder="昵称即可"></label></div>
+      <div id="photo-fields"><label>实拍图片<input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp"></label><p class="fine-print">JPEG、PNG、WebP，单张不超过5MiB。请上传本人拍摄或有权展示的图片。图片会重新编码并去除EXIF信息。</p><img id="image-preview" class="image-preview hidden" alt="所选投稿图片预览"><label>拍摄设备<input name="equipment" maxlength="300" placeholder="望远镜、手机/相机、转接装置"></label><label>拍摄条件<input name="conditions" maxlength="500" placeholder="例如：晴天，手持，距目标约20m，未做锐化"></label></div>
+      <div id="parameter-fields" class="hidden"><div class="form-row"><label>要补充的参数<select name="field" id="submit-field"></select></label><label>新参数值<input name="value" id="submit-value" maxlength="400" placeholder="数值字段只填数字"></label></div></div>
+      <label>来源链接（可选）<input name="source_url" type="url" maxlength="500" placeholder="https://…"></label><label>补充说明<textarea name="note" rows="4" maxlength="2000" placeholder="参数的来源或测量方法、图片想说明的特点、使用感受…"></textarea></label>
+      <label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="checkbox-label"><input name="consent" type="checkbox" required><span>我确认资料真实且有权提交，同意审核后公开资料、署名及图片，并授权本站展示。照片版权仍归原作者。</span></label>
+      <p id="submit-message" role="status" aria-live="polite"></p><button class="button dark submit-button" type="submit" id="submit-button">提交并等待审核</button>
+    </form></dialog>
+</body></html>

@@ -1,0 +1,23 @@
+# Publish only the application and sanitized catalog. Local research stays private.
+/*
+!/.gitignore
+!/.gitattributes
+!/README.md
+!/LICENSE
+!/requirements.txt
+!/telescope/
+!/data/
+!/downloads/
+!/docs/
+!/deployment/
+!/tests/
+!/tools/
+!/.github/
+**/__pycache__/
+**/*.pyc
+**/.env
+**/*.db
+**/*.db-*
+**/node_modules/
+**/.venv/
+**/*.inspect.ndjson

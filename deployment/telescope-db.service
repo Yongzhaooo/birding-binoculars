@@ -1,0 +1,26 @@
+[Unit]
+Description=Personal telescope database
+After=network.target
+
+[Service]
+User=telescope-db
+Group=telescope-db
+WorkingDirectory=/opt/telescope-db/current
+Environment=PYTHONPATH=/opt/telescope-db/current
+Environment=PYTHONUTF8=1
+Environment=PYTHONIOENCODING=utf-8
+Environment=PUBLIC_ORIGIN=https://wyj.cangming.fyi
+ExecStart=/opt/telescope-db/venv/bin/python -B -m telescope serve --data-dir /var/lib/telescope-db --port 8092 --trust-proxy
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/telescope-db
+MemoryMax=768M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target
