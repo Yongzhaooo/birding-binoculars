@@ -57,6 +57,7 @@ function openDetail(model){
       const row=el('div','parameter-item'),value=el('span','',display(model.parameters[f.key])),status=model.verification[f.key];
       if(status==='unverified')value.append(el('small','parameter-status','待核或存在来源冲突'));
       if(status==='community')value.append(el('small','parameter-status','用户补充，已审核'));
+      if(status==='derived')value.append(el('small','parameter-status','按已审核规格重新计算'));
       row.append(el('span','',f.label),value);grid.append(row);
     }section.append(grid);content.append(section);
   }
@@ -109,6 +110,6 @@ fetch('/api/catalog',{cache:'no-store'}).then(async response=>{if(!response.ok)t
   fillSelect('mag-filter',[...new Set(data.models.map(m=>m.parameters.magnification).filter(v=>typeof v==='number'))].sort((a,b)=>a-b),'×');
   fillSelect('objective-filter',[...new Set(data.models.map(m=>m.parameters.objective_mm).filter(v=>typeof v==='number'))].sort((a,b)=>a-b),'mm');
   for(const model of [...data.models].sort((a,b)=>a.name.localeCompare(b.name,'zh-CN'))){const option=el('option','',model.name);option.value=model.id;$('submit-model').append(option);}
-  for(const f of [...data.fields,{key:'reference_price',label:'参考入手价格(元)'}]){const option=el('option','',f.label);option.value=f.key;$('submit-field').append(option);}
+  for(const f of [...data.fields.filter(f=>!['field_m','exit_pupil_mm'].includes(f.key)),{key:'reference_price',label:'参考入手价格(元)'}]){const option=el('option','',f.label);option.value=f.key;$('submit-field').append(option);}
   applyFilters();renderGallery();
 }).catch(error=>{$('load-error').textContent=`${error.message}，请稍后刷新页面。`;$('load-error').classList.remove('hidden');$('result-count').textContent='目录暂不可用';});

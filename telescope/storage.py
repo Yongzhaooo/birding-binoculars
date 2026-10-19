@@ -1,5 +1,6 @@
 """Persistent catalog and a single moderation boundary for all public contributions."""
 import json
+import math
 import sqlite3
 import uuid
 from contextlib import closing
@@ -60,6 +61,15 @@ class Store:
                     m['verification'][r['field']]='community'
                 p=json.loads(r['payload'])
                 m.setdefault('community_sources',{})[r['field']]={k:p.get(k,'') for k in ('credit','note','source_url')}
+            for m in models.values():
+                changed=m.get('community_sources',{})
+                p=m['parameters']
+                if {'magnification','objective_mm'} & changed.keys() and all(type(p.get(k)) in (int,float) for k in ('magnification','objective_mm')):
+                    p['exit_pupil_mm']=round(p['objective_mm']/p['magnification'],2)
+                    m['verification']['exit_pupil_mm']='derived'
+                if 'field_deg' in changed:
+                    p['field_m']=round(2000*math.tan(math.radians(p['field_deg'])/2),1)
+                    m['verification']['field_m']='derived'
             contributions=[]
             for r in db.execute("SELECT * FROM submissions WHERE status='approved' ORDER BY created DESC"):
                 p=json.loads(r['payload'])

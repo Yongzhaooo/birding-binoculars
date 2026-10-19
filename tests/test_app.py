@@ -139,6 +139,17 @@ class CatalogTest(unittest.TestCase):
         self.assertEqual(self.request('/api/submissions',self.submission())[0],429)
         self.assertEqual(len(self.store.review()),6)
 
+    def test_derived_parameters_follow_approved_inputs(self):
+        for field,value in [('objective_mm',50),('magnification',8),('field_deg',8)]:
+            status,submission=self.request('/api/submissions',self.submission(field=field,value=value))
+            self.assertEqual(status,202)
+            self.store.review(submission['id'],'approved')
+        model=next(m for m in self.store.public()['models'] if m['id']=='ADD02')
+        self.assertEqual(model['parameters']['exit_pupil_mm'],6.25)
+        self.assertEqual(model['parameters']['field_m'],139.9)
+        self.assertEqual(model['verification']['field_m'],'derived')
+        self.assertEqual(self.request('/api/submissions',self.submission(field='exit_pupil_mm',value=100))[0],400)
+
     def test_unknown_schema_fails_closed(self):
         other=Path(self.temp.name)/'future';other.mkdir()
         with closing(sqlite3.connect(other/'catalog.db')) as db: db.execute('PRAGMA user_version=999')

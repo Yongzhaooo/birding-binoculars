@@ -74,6 +74,7 @@ def validate(payload, store):
     elif kind=='parameter':
         field=text(payload,'field',60,True)
         if field not in store.fields and field!='reference_price': raise ValueError('参数字段无效')
+        if field in ('field_m','exit_pupil_mm'): raise ValueError('此项为计算值，请修正原始倍率、物镜口径或视场角')
         v=payload.get('value')
         if field=='reference_price' or store.fields[field]['numeric']:
             if type(v) not in (int,float) or not math.isfinite(v) or v<=0 or v>1_000_000: raise ValueError('数值参数需为有限正数')
