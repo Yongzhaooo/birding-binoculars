@@ -51,7 +51,8 @@ def main():
     backup=Path('/var/backups/telescope-db')/time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())
     backup.mkdir(mode=0o700,parents=True)
     caddy=Path('/etc/caddy/Caddyfile')
-    shutil.copy2(caddy,backup/'Caddyfile')
+    if 'import /etc/caddy/telescope-db.caddy' not in caddy.read_text(encoding='utf-8').splitlines():
+        raise RuntimeError('Install and validate the shared gateway route through vps-management first')
     active=False
     try:
         if previous:
@@ -64,20 +65,11 @@ def main():
             if (data/'request-secret').is_file(): shutil.copy2(data/'request-secret',backup/'request-secret')
         link=base/'next';link.symlink_to(release,target_is_directory=True);link.replace(current)
         shutil.copy2(release/'deployment/telescope-db.service','/etc/systemd/system/telescope-db.service')
-        shutil.copy2(release/'deployment/telescope-db.caddy','/etc/caddy/telescope-db.caddy')
-        config=caddy.read_text(encoding='utf-8')
-        line='import /etc/caddy/telescope-db.caddy'
-        candidate=backup/'Caddyfile.candidate'
-        candidate.write_text(config if line in config.splitlines() else config.rstrip()+'\n\n'+line+'\n',encoding='utf-8')
-        run('caddy','validate','--config',str(candidate),'--adapter','caddyfile')
         run('systemctl','daemon-reload')
         run('systemctl','enable','--now','telescope-db')
         active=True
         run('curl','--fail','--retry','10','--retry-connrefused','--retry-delay','1','-H','Host: wyj.cangming.fyi','http://127.0.0.1:8092/api/health')
-        shutil.copy2(candidate,caddy)
-        run('caddy','reload','--config',str(caddy),'--adapter','caddyfile')
     except Exception:
-        shutil.copy2(backup/'Caddyfile',caddy)
         if previous:
             restore=base/'restore';restore.symlink_to(previous,target_is_directory=True);restore.replace(current)
             shutil.copy2(previous/'deployment/telescope-db.service','/etc/systemd/system/telescope-db.service')

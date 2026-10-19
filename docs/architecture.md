@@ -9,7 +9,7 @@
 - `telescope/server.py` 提供公开查询和投稿。投稿先待审，图片经过解码、尺寸限制和重新编码，不保留原文件的EXIF定位信息。未批准的图片和资料不会进入公开接口。
 - `telescope/static/` 是无构建步骤的浏览器界面。筛选、型号详情、实拍画廊和投稿使用同一接口，文本通过DOM文本节点显示。
 - 审核通过SSH运行命令行工具，不开放公网管理接口。审核员可查看完整投稿、预览待审图片并单条批准或拒绝。已批准参数保留来源和说明。
-- 程序在`/opt/telescope-db/releases/<commit>`，可变数据库和图片在`/var/lib/telescope-db`，系统用户独立。Caddy为`wyj.cangming.fyi`终止TLS，只转发到回环端口8092。
+- 程序在`/opt/telescope-db/releases/<commit>`，可变数据库和图片在`/var/lib/telescope-db`，系统用户独立。Caddy为`wyj.cangming.fyi`终止TLS，只转发到回环端口8092。共享网关配置由`vps-management`维护，应用发布不改写共享配置。
 
 ## 取舍
 

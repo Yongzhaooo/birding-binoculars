@@ -1,3 +1,4 @@
+# Reference only. The active gateway is maintained by the private vps-management repository.
 wyj.cangming.fyi {
     import safe_access_log
     header Strict-Transport-Security "max-age=31536000"

@@ -9,7 +9,9 @@
 - `/opt/telescope-db/venv/`：Python环境，安装根目录`requirements.txt`。
 - `/var/lib/telescope-db/`：私有SQLite数据库、重新编码的投稿图片和请求签名密钥。由`telescope-db`用户持有，不进入Git。
 
-初次部署安装Python 3.10+和venv，创建无登录服务用户。将发布包解压到新版本目录，代码归root只读，运行目录归服务用户且权限0700。安装`telescope-db.service`，启用服务。Caddy主配置只增加本项目片段的import，经`caddy validate`通过后reload。DNS的`wyj`记录须指向VPS，再检查HTTPS。
+初次部署安装Python 3.10+和venv，创建无登录服务用户。将发布包解压到新版本目录，代码归root只读，运行目录归服务用户且权限0700。安装`telescope-db.service`，启用服务。
+
+共享Caddy的维护源属于私有`vps-management`仓库，其`caddy/Caddyfile`导入`caddy/telescope-db.caddy`。本项目的`telescope-db.caddy.example`仅供参考，应用发布工具不修改或回退共享网关。首次配置站点时由网关维护源保留现有配置，校验后显式reload。DNS采用`wyj`的CNAME指向`vps.cangming.fyi`，TTL 600，之后检查HTTPS。
 
 ## 审核
 
